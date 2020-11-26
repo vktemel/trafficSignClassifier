@@ -16,6 +16,7 @@ The goals / steps of this project are the following:
 
 
 [//]: # (Image References)
+[initialResult]: ./output_images/InitialLeNetResult.png "Initial Model"
 
 [image1]: ./examples/visualization.jpg "Visualization"
 [image2]: ./examples/grayscale.jpg "Grayscaling"
@@ -113,6 +114,11 @@ First of all, it didn't seem like the model finished converging when I set the e
 ---
 
 #### 4. Describe the approach taken for finding a solution and getting the validation set accuracy to be at least 0.93. Include in the discussion the results on the training, validation and test sets and where in the code these were calculated. Your approach may have been an iterative process, in which case, outline the steps you took to get to the final solution and why you chose those steps. Perhaps your solution involved an already well known implementation or architecture. In this case, discuss why you think the architecture is suitable for the current problem.
+
+For this project, I started with the LeNet architecture from the coursework. The main reason for choosing LeNet is because it was encouraged as a good starting point, and it performed fairly well in the course Lab. However, the model was overfitting, as the training accuracy was 0.99 or higher, while the validation accuracy couldn't reach 0.93. 
+![initialResult]
+
+LeNet architecture consists of 2 convolutional layers, each followed with max pooling, and then 3 fully connected layers. As the model was overfitting, I thought it made sense to remove one of the connected layers to reduce the model parameters. In addition, the dataset has uneven distribution of samples. Therefore, I thought a dropout layer made sense between the fully connected layers as a measure to prevent overfitting. I tried 3 drop out rates: 0.80, 0.75 and 0.50. Among these 0.50 gave me the best validation accuracy. The results can be seen below. 
 
 My final model results were:
 * training set accuracy of ?
