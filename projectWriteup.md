@@ -17,6 +17,7 @@ The goals / steps of this project are the following:
 
 [//]: # (Image References)
 [initialResult]: ./output_images/InitialLeNetResult.png "Initial Model"
+[ModelResult]: ./output_images/ModelAccuracyPlot.png "Final Model"
 
 [image1]: ./examples/visualization.jpg "Visualization"
 [image2]: ./examples/grayscale.jpg "Grayscaling"
@@ -75,14 +76,11 @@ Although traffic signs utilize color, it is typically not the main property. For
 
 Here is an image
 
-The last step of preprocessing was normalization of the data. Normalized data sets are recommended as it improves training of the model by having both positive and negative values and it helps the model to converge quicker.  
+The last step of preprocessing was normalization of the data. Normalized data sets are recommended as it improves training of the model by having both positive and negative values and it helps the model to converge quicker. 
 
-Other ideas: 
-- Generate additional data
-- Augmentation
+For preprocessing, I also spent quite a bit of time in Udacity knowledge base, especially when I first started the project and I realized the model was overfitting. I tried to understand what is meant by augmentation, which was a common discussion point. At first, I thought augmentation was *only modifying* the existing training data, but not *extending*. This generated a lot of confusion to me. Now, I understand that this is a mechanism to *balance* the training data, as training data didn't have even distribution among the traffic signs. However, as I met the required accuracy for the project via modifications to the model, I didn't try further augmentation. 
 
-The difference between the original data set and the augmented data set is the following ... 
-
+---
 
 #### 2. Describe what your final model architecture looks like including model type, layers, layer sizes, connectivity, etc.) Consider including a diagram and/or table describing the final model.
 
@@ -93,21 +91,24 @@ My final model consisted of the following layers:
 | Layer         		|     Description	        					| 
 |:---------------------:|:---------------------------------------------:| 
 | Input         		| 32x32x1 grayscale normalized image   			| 
-| Convolution 3x3     	| 1x1 stride, same padding, outputs 32x32x64 	|
-| RELU					|												|
-| Max pooling	      	| 2x2 stride,  outputs 16x16x64 				|
-| Convolution 3x3	    | etc.      									|
-| Fully connected		| etc.        									|
-| Softmax				| etc.        									|
-|						|												|
-|						|												|
+| Convolution 3x3     	| 1x1 stride, same padding, outputs 28x28x6 	|
+| RELU					| Activation Layer								|
+| Max pooling	      	| 2x2 stride, outputs 14x14x6   				|
+| Convolution 3x3	    | 1x1 stride, same padding, outputs 10x10x16  	|
+| RELU                  | Activation layer                              |
+| Max pooling           | 2x2 stride, outputs 5x5x16                    |
+| Fully connected		| Input 400 to Output 120           			|
+| RELU                  | Activation Layer                              |
+| Dropout               | Keep probability = 0.5                        |
+| Fully connected       | Input 120 to Output 43                        |
+| Softmax				|                                				|
  
 
 ---
 
 #### 3. Describe how you trained your model. The discussion can include the type of optimizer, the batch size, number of epochs and any hyperparameters such as learning rate.
 
-I referred to the course material again for training the modeland used the Adam optimizer, as this was suggested as a good starting point for optimizer in the lectures. In the beginning, I set the number of epochs to 10, the batch size to 128 and the learning rate to 0.001, same as the lab. However, I changed these to 20, 256 and 0.005 respectively. 
+I referred to the course material again for training the model and used the Adam optimizer, as this was suggested as a good starting point for optimizer in the lectures. In the beginning, I set the number of epochs to 10, the batch size to 128 and the learning rate to 0.001, same as the lab. However, I changed these to 20, 256 and 0.005 respectively. 
 
 First of all, it didn't seem like the model finished converging when I set the epochs to 10, therefore I increased it to 20. I also thought that the batch size was too small, as there are 43 types of traffic signs and the counts are not even. Now that the batch size is increased, increasing the learning rate also made sense as the model will be trained on more samples and it makes sense to take a *larger* step with each batch. 
 
@@ -120,9 +121,14 @@ For this project, I started with the LeNet architecture from the coursework. The
 
 LeNet architecture consists of 2 convolutional layers, each followed with max pooling, and then 3 fully connected layers. As the model was overfitting, I thought it made sense to remove one of the connected layers to reduce the model parameters. In addition, the dataset has uneven distribution of samples. Therefore, I thought a dropout layer made sense between the fully connected layers as a measure to prevent overfitting. I tried 3 drop out rates: 0.80, 0.75 and 0.50. Among these 0.50 gave me the best validation accuracy. The results can be seen below. 
 
-My final model results were:
-* training set accuracy of ?
-* validation set accuracy of ? 
+![ModelResult]
+
+As it can be seen from the plot, the model is *still overfitting*. I believe this can be further mitigated by augmenting the training data, by creating new images. However, as mentioned above, I didn't pursue this route for this project. In the course material, it was also mentioned that LeNet was created to solve a simpler problem. I thought about adding more convolutional layers to make it deeper; however, the results were already satisfying. Therefore, I didn't add any additional layers to the model. 
+
+
+**My final model results were:**
+* training set accuracy of **0.997**
+* validation set accuracy of **0.957**
 * test set accuracy of ?
 
 If an iterative approach was chosen:
@@ -136,7 +142,7 @@ If a well known architecture was chosen:
 * What architecture was chosen?
 * Why did you believe it would be relevant to the traffic sign application?
 * How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
- 
+
 
 ### Test a Model on New Images
 
