@@ -21,6 +21,7 @@ The goals / steps of this project are the following:
 [examples]: ./output_images/tsexamples.png "examples"
 [countplots]: ./output_images/countplotsofSets.png "countPlots"
 [grayscale]: ./output_images/grayscaleExample.png "grayscale"
+[webimages]: ./output_images/webTrafficSigns.png "webimages"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -134,44 +135,63 @@ The final values for the model indicates that the model is still overfitting, as
 
 Here are five German traffic signs that I found on the web:
 
-![alt text][image4] ![alt text][image5] ![alt text][image6] 
-![alt text][image7] ![alt text][image8]
+![webimages]
 
-The first image might be difficult to classify because ...
+The images are collected from various sources from image search websites, respectively they are Speed Limit (50 km/h), Bicycle Crossing, No Passing, Road narrows on the right, and slippery road. 
+
+I expect the model to have difficulties with slippery road and bicycle signs, as the shapes are harder to understand in the 32x32 images, even for human eye. I'm not sure if the convolutional neural network is deep enough to identify all the features of a bicycle to be able to form the whole picture and classify correctly. Similarly to slippery road sign, the squibbly lines below the vehicle may not be well identified; however, this type of road sign is fairly unique too.  
+
+---
 
 #### 2. Discuss the model's predictions on these new traffic signs and compare the results to predicting on the test set. At a minimum, discuss what the predictions were, the accuracy on these new predictions, and compare the accuracy to the accuracy on the test set (OPTIONAL: Discuss the results in more detail as described in the "Stand Out Suggestions" part of the rubric).
 
 Here are the results of the prediction:
 
-| Image			        |     Prediction	        					| 
-|:---------------------:|:---------------------------------------------:| 
-| Stop Sign      		| Stop sign   									| 
-| U-turn     			| U-turn 										|
-| Yield					| Yield											|
-| 100 km/h	      		| Bumpy Road					 				|
-| Slippery Road			| Slippery Road      							|
+| Image			            |     Prediction	        					| 
+|:-------------------------:|:---------------------------------------------:| 
+| Speed Limit (50 km/h)     | Speed Limit (50 km/h)                         |
+| Bicycle     			    | Speed Limit (30 km/h)							|
+| No Passing			    | No Passing									|
+| Road Narrows on the Right	| Road Narrows on the Right      				|
+| Slippery Road			    | Slippery Road      							|
 
 
-The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. This compares favorably to the accuracy on the test set of ...
+The model was able to correctly guess 4 of the 5 traffic signs, which gives an accuracy of 80%. The size of the dataset is very small; however, the accuracy is quite lower than the test accuracy of the original dataset. This could've been easily different if different traffic signs with easier to detect features were selected for testing. Only bicycle was classiffied incorrectly, which is somewhat expected due to the complexity of features it contains. 
+
+---
 
 #### 3. Describe how certain the model is when predicting on each of the five new images by looking at the softmax probabilities for each prediction. Provide the top 5 softmax probabilities for each image along with the sign type of each probability. (OPTIONAL: as described in the "Stand Out Suggestions" part of the rubric, visualizations can also be provided such as bar charts)
 
-The code for making predictions on my final model is located in the 11th cell of the Ipython notebook.
+The code for making predictions on my final model is the following: 
+```python
+softmaxOut = tf.nn.softmax(logits)
+topProbs = tf.nn.top_k(softmaxOut, k=5)
 
-For the first image, the model is relatively sure that this is a stop sign (probability of 0.6), and the image does contain a stop sign. The top five soft max probabilities were
+with tf.Session() as sess:
+    saver.restore(sess, './myModelTS')
+
+    probs = sess.run(topProbs, feed_dict = {x: X_test_new, keep_prob: 1.0})
+```
+
+For the first (speed limit 50 km/h) and third image (no passing), the model was very confident to classify these with probability very close to 1.0. And these were correctly classified. Similarly, the fifth image (slippery road) also had  a probability very close to 1.0. Therefore, I won't list the top 5 probabilities for these images, as the remaining 4 out of the softmax were negligible. These values are displayed in the Jupyter notebook. 
+
+For the second image, the image was classified incorrectly. The model classified this as a speed limit (30 km/h) with a probability of 0.74, and this was incorrectly classified. On top of it, none of the top 5 probabilities were of bicycle, so the model performed very poorly on this image. The top five soft max probabilities were: 
 
 | Probability         	|     Prediction	        					| 
 |:---------------------:|:---------------------------------------------:| 
-| .60         			| Stop sign   									| 
-| .20     				| U-turn 										|
-| .05					| Yield											|
-| .04	      			| Bumpy Road					 				|
-| .01				    | Slippery Road      							|
+| .74         			| Speed limit (30km/h)   						| 
+| .18     				| Speed limit (100km/h) 						|
+| .05					| Speed limit (120km/h)							|
+| .02	      			| Go straight or left			 				|
+| .01				    | Roundabout mandatory     	    				|
 
 
-For the second image ... 
+For the fourth image, the image was classified correctly as 'Road Narrows On Right" with a probability of 0.96. This was pretty good, as it was also classified correctly. However, I will still display the top 5 probabilities here to show the good performance of the model in classifying this image. 
 
-### (Optional) Visualizing the Neural Network (See Step 4 of the Ipython notebook for more details)
-#### 1. Discuss the visual output of your trained network's feature maps. What characteristics did the neural network use to make classifications?
-
-
+| Probability         	|     Prediction	        					| 
+|:---------------------:|:---------------------------------------------:| 
+| .959        			| Road narrows on the right   					| 
+| .004     				| Pedestrians                       			|
+| 1.8e-13				| Children crossing                 			|
+| 1.1e-14	      		| Right-of-way at the next intersection			|
+| 3.6e-14	 		    | Double curve           	    				|
