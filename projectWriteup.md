@@ -18,15 +18,9 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 [initialResult]: ./output_images/InitialLeNetResult.png "Initial Model"
 [ModelResult]: ./output_images/ModelAccuracyPlot.png "Final Model"
-
-[image1]: ./examples/visualization.jpg "Visualization"
-[image2]: ./examples/grayscale.jpg "Grayscaling"
-[image3]: ./examples/random_noise.jpg "Random Noise"
-[image4]: ./examples/placeholder.png "Traffic Sign 1"
-[image5]: ./examples/placeholder.png "Traffic Sign 2"
-[image6]: ./examples/placeholder.png "Traffic Sign 3"
-[image7]: ./examples/placeholder.png "Traffic Sign 4"
-[image8]: ./examples/placeholder.png "Traffic Sign 5"
+[examples]: ./output_images/tsexamples.png "examples"
+[countplots]: ./output_images/countplotsofSets.png "countPlots"
+[grayscale]: ./output_images/grayscaleExample.png "grayscale"
 
 ## Rubric Points
 ### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/481/view) individually and describe how I addressed each point in my implementation.  
@@ -56,11 +50,11 @@ I used the pandas library, specifically `shape` function to find the required su
 
 Each image on the dataset has 32x32 size for height and width. Each image is also given in color, which means each image has depth of 3. Below, you see couple of exmaples from the dataset. 
 
-Here is example images. 
+![examples]
 
 I've also looked at how many of each traffic sign exists in the dataset. I thought the best way of visualizing it was through a bar chart. Below, you see the labels for training and validation set.
 
-Here is bar plots. 
+![countplots]
 
 The bar plots show us that the types of traffic signs are not evenly distributed; however, training and validation sets have a very similar distribution. 
 
@@ -74,7 +68,7 @@ The visuals above gave me enough understanding of the dataset, therefore I have 
 
 Although traffic signs utilize color, it is typically not the main property. For example, a stop sign is universally red; however, the more identifying feature is the text **STOP** rather than the color. Therefore, I decided to exclude color information by converting the images to grayscale. Below, you see an example of an image before and after grayscaling. 
 
-Here is an image
+![grayscale]
 
 The last step of preprocessing was normalization of the data. Normalized data sets are recommended as it improves training of the model by having both positive and negative values and it helps the model to converge quicker. 
 
@@ -125,24 +119,14 @@ LeNet architecture consists of 2 convolutional layers, each followed with max po
 
 As it can be seen from the plot, the model is *still overfitting*. I believe this can be further mitigated by augmenting the training data, by creating new images. However, as mentioned above, I didn't pursue this route for this project. In the course material, it was also mentioned that LeNet was created to solve a simpler problem. I thought about adding more convolutional layers to make it deeper; however, the results were already satisfying. Therefore, I didn't add any additional layers to the model. 
 
-
 **My final model results were:**
 * training set accuracy of **0.997**
-* validation set accuracy of **0.957**
-* test set accuracy of ?
+* validation set accuracy of **0.956**
+* test set accuracy of **0.943**
 
-If an iterative approach was chosen:
-* What was the first architecture that was tried and why was it chosen?
-* What were some problems with the initial architecture?
-* How was the architecture adjusted and why was it adjusted? Typical adjustments could include choosing a different model architecture, adding or taking away layers (pooling, dropout, convolution, etc), using an activation function or changing the activation function. One common justification for adjusting an architecture would be due to overfitting or underfitting. A high accuracy on the training set but low accuracy on the validation set indicates over fitting; a low accuracy on both sets indicates under fitting.
-* Which parameters were tuned? How were they adjusted and why?
-* What are some of the important design choices and why were they chosen? For example, why might a convolution layer work well with this problem? How might a dropout layer help with creating a successful model?
+The final values for the model indicates that the model is still overfitting, as the difference between training and test set is still significant. Nevertheless, I think the overall performance of the model is very good as test set also contains a significant number of samples. 
 
-If a well known architecture was chosen:
-* What architecture was chosen?
-* Why did you believe it would be relevant to the traffic sign application?
-* How does the final model's accuracy on the training, validation and test set provide evidence that the model is working well?
-
+---
 
 ### Test a Model on New Images
 
