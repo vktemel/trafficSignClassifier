@@ -121,9 +121,9 @@ LeNet architecture consists of 2 convolutional layers, each followed with max po
 As it can be seen from the plot, the model is *still overfitting*. I believe this can be further mitigated by augmenting the training data, by creating new images. However, as mentioned above, I didn't pursue this route for this project. In the course material, it was also mentioned that LeNet was created to solve a simpler problem. I thought about adding more convolutional layers to make it deeper; however, the results were already satisfying. Therefore, I didn't add any additional layers to the model. 
 
 **My final model results were:**
-* training set accuracy of **0.997**
-* validation set accuracy of **0.956**
-* test set accuracy of **0.943**
+* training set accuracy of **0.993**
+* validation set accuracy of **0.945**
+* test set accuracy of **0.928**
 
 The final values for the model indicates that the model is still overfitting, as the difference between training and test set is still significant. Nevertheless, I think the overall performance of the model is very good as test set also contains a significant number of samples. 
 
@@ -150,7 +150,7 @@ Here are the results of the prediction:
 | Image			            |     Prediction	        					| 
 |:-------------------------:|:---------------------------------------------:| 
 | Speed Limit (50 km/h)     | Speed Limit (50 km/h)                         |
-| Bicycle     			    | Speed Limit (30 km/h)							|
+| Bicycle     			    | Roundabout mandatory  						|
 | No Passing			    | No Passing									|
 | Road Narrows on the Right	| Road Narrows on the Right      				|
 | Slippery Road			    | Slippery Road      							|
